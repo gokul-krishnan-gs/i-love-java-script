@@ -226,3 +226,20 @@ Custom errors are created using a **constructor function** (which should be capi
 ## X. Note on Proposed Self Assignment Operator
 
 The source material notes that there are tutorials suggesting that a new **self assignment operator** (e.g., `?=`) might replace `try...catch`. However, this operator is **not yet available in JavaScript** and is only in the proposal stage. Developers must continue to learn and use standard error handling techniques, including `try...catch`, rethrowing, and custom errors, as existing codebases depend on them.
+
+
+# JavaScript Error Handling Components Reference
+
+The following table explains the usage and purpose of the core components used in JavaScript error and exception handling.
+
+| Term | Syntax / Location | Usage and Purpose |
+| :--- | :--- | :--- |
+| **`try`** | Must be followed immediately by `catch` or `finally`. Code logic is written inside the `try` block. | The block where the main code logic is executed. JavaScript executes code line by line inside `try`. If an error occurs, execution is suspended, and control immediately shifts to `catch`. All code that needs error safeguarding should be enclosed in a `try` block. |
+| **`catch`** | Follows the `try` block: `catch (err) { ... }`. | Executes only if an error (exception) is thrown in the preceding `try` block. It is the block used for handling the error. Using `catch` prevents the application from crashing, allowing developers to gracefully provide a proper error message or redirect the user. It receives an instance of the Error Object (`err`) containing all necessary details about the error. Note: Modern JavaScript allows the omission of the error object parameter (`catch {}`). |
+| **`throw`** | Used inside the `try` block, often with `new Error()`: `throw new Error("message");`. | Used to intentionally generate (throw) a new exception or error based on a specific condition, even if JavaScript wouldn't inherently recognize it as an error (e.g., stopping division by zero which results in `Infinity`). Throwing an error halts the execution of the `try` block and immediately transfers control to the `catch` block. |
+| **`rethrow`** | Used inside the `catch` block: `throw error;` (The `new` keyword is omitted because `error` is already an instance). | Occurs when you catch an error, process it locally (e.g., logging it internally), and then throw the same error object again. This is useful when the catching function wants to delegate the final handling and resolution of the exception up to a higher-level caller function in the execution hierarchy. |
+| **Error Object (`error`)** | Received as a parameter by the `catch` block. | An instance containing detailed information about the exception that occurred. Key properties include: |
+| **`error.message`** | | A human-readable textual message detailing the error, often shown to the end user. |
+| **`error.name`** | | The specific name or type of error that occurred (e.g., "ReferenceError", "TypeError", or a `ValidationError` for custom errors). Used for customized response checks. |
+| **`error.stack`** | | Provides the current call stack, showing the sequence of nested calls that led to the error. It is immensely useful for debugging as it helps trace the error back through multiple functions or files. Custom errors must initialize this property. |
+| **`finally`** | Follows the `try...catch` block: `finally { cleanup code }`. | This block is always executed, regardless of whether an error was thrown in the `try` block or if the `catch` block ran. It is primarily used for cleanup purposes, such as closing database connections, releasing file system resources, or setting variables that held memory references to `null`. |
