@@ -5,7 +5,7 @@ function details(name,timeTaken){
         setTimeout(()=>{
         console.log("Race Completed 🏁");
         console.log(`Order: `,order);
-        alert(`Winner is : ${order[0]}`);
+        alert(`Winner is : ${order[0]}🏆`);
         },3000)
 
     }
